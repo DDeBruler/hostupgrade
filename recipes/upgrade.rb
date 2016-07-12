@@ -54,7 +54,7 @@ if node["hostupgrade"]["update_system"]
 
         end
 
-    when "centos", "redhat", "fedora"   #Fedora based systems
+    when "centos", "redhat", "fedora", "amazon"   #Fedora based systems
 
         #Do yum check-update
         bash "Run yum check-update" do
