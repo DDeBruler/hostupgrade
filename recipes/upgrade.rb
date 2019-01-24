@@ -6,10 +6,10 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-#     _       _       _       _       _       _       _       _       _       _       _    
-#   _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__ 
+#     _       _       _       _       _       _       _       _       _       _       _
+#   _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__  _( )__
 # _|     _||     _||     _||     _||     _||     _||     _||     _||     _||     _||     _|
-#(_ H _ ((_ O _ ((_ S _ ((_ T _ ((_ U _ ((_ P _ ((_ G _ ((_ R _ ((_ A _ ((_ D _ ((_ E _ (_ 
+#(_ H _ ((_ O _ ((_ S _ ((_ T _ ((_ U _ ((_ P _ ((_ G _ ((_ R _ ((_ A _ ((_ D _ ((_ E _ (_
 #  |_( )__||_( )__||_( )__||_( )__||_( )__||_( )__||_( )__||_( )__||_( )__||_( )__||_( )__|
 
 #Include for chef-solo touch
@@ -68,8 +68,10 @@ if node["hostupgrade"]["update_system"]
         if node["hostupgrade"]["upgrade_system"]
 
             #Do yum update -y to upgrade
+            update_command = "yum update -y"
+            update_command += " --skip-broken" if node["hostupgrade"]["skip_broken"]
             bash "Run yum update" do
-                code "yum update -y"
+                code update_command
                 action :run
                 notifies :create, "ruby_block[Upgrade Flag Centos]", :immediately
                 not_if { ( node.attribute?("upgrade_complete") && node["hostupgrade"]["first_time_only"] ) || ( node["hostupgrade"]["first_time_only"] && solo_upgrade_complete )  }
